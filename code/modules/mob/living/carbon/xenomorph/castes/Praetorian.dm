@@ -1,0 +1,130 @@
+/datum/caste_datum/praetorian
+	caste_type = XENO_CASTE_PRAETORIAN
+	tier = 3
+
+	melee_damage_lower = XENO_DAMAGE_TIER_6
+	melee_damage_upper = XENO_DAMAGE_TIER_6
+	melee_vehicle_damage = XENO_DAMAGE_TIER_7
+	max_health = XENO_HEALTH_KING
+	plasma_gain = XENO_PLASMA_GAIN_TIER_5
+	plasma_max = XENO_PLASMA_TIER_8
+	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_4
+	armor_deflection = XENO_ARMOR_TIER_2
+	evasion = XENO_EVASION_NONE
+	speed = XENO_SPEED_TIER_6
+
+	evolution_allowed = FALSE
+	deevolves_to = list(XENO_CASTE_WARRIOR, XENO_CASTE_SPITTER)
+	caste_desc = "The warleader of the hive."
+	spit_types = list(/datum/ammo/xeno/acid/praetorian)
+	acid_level = 2
+
+	aura_strength = 3
+	spit_delay = 20
+
+	tackle_min = 2
+	tackle_max = 5
+	tackle_chance = 45
+
+	available_strains = list(
+		/datum/xeno_strain/dancer,
+		/datum/xeno_strain/oppressor,
+		/datum/xeno_strain/vanguard,
+		/datum/xeno_strain/warden,
+	)
+	behavior_delegate_type = /datum/behavior_delegate/praetorian_base
+
+	minimum_evolve_time = 15 MINUTES
+
+	minimap_icon = "praetorian"
+
+	royal_caste = TRUE
+
+/mob/living/carbon/xenomorph/praetorian
+	caste_type = XENO_CASTE_PRAETORIAN
+	name = XENO_CASTE_PRAETORIAN
+	desc = "A huge, looming beast of an alien."
+	icon_size = 64
+	icon_state = "Praetorian Walking"
+	plasma_types = list(PLASMA_PHEROMONE,PLASMA_NEUROTOXIN)
+	pixel_x = -16
+	old_x = -16
+	mob_size = MOB_SIZE_BIG
+	drag_delay = 6 //pulling a big dead xeno is hard
+	tier = 3
+	organ_value = 3000
+
+	base_actions = list(
+		/datum/action/xeno_action/onclick/xeno_resting,
+		/datum/action/xeno_action/onclick/regurgitate,
+		/datum/action/xeno_action/watch_xeno,
+		/datum/action/xeno_action/activable/tail_stab,
+		/datum/action/xeno_action/activable/corrosive_acid,
+		/datum/action/xeno_action/activable/xeno_spit/ai,
+		/datum/action/xeno_action/activable/pounce/base_prae_dash,
+		/datum/action/xeno_action/activable/prae_acid_ball/ai,
+		/datum/action/xeno_action/activable/spray_acid/base_prae_spray_acid,
+		/datum/action/xeno_action/onclick/crusher_stomp,
+		/datum/action/xeno_action/onclick/tacmap,
+	)
+
+	icon_xeno = 'icons/mob/xenos/praetorian.dmi'
+	icon_xenonid = 'icons/mob/xenonids/praetorian.dmi'
+
+	weed_food_icon = 'icons/mob/xenos/weeds_64x64.dmi'
+	weed_food_states = list("Praetorian_1","Praetorian_2","Praetorian_3")
+	weed_food_states_flipped = list("Praetorian_1","Praetorian_2","Praetorian_3")
+	ai_range = 24
+	forced_retarget_time = (3 SECONDS)
+
+/datum/behavior_delegate/praetorian_base
+	name = "Base Praetorian Behavior Delegate"
+	///reward for hitting shots instead of spamming acid ball
+	var/reward_shield = 15
+
+/datum/behavior_delegate/praetorian_base/ranged_attack_additional_effects_target(atom/A)
+	if (!ishuman(A))
+		return
+
+	var/mob/living/carbon/human/H = A
+
+	var/datum/effects/prae_acid_stacks/PAS = null
+	for (var/datum/effects/prae_acid_stacks/prae_acid_stacks in H.effects_list)
+		PAS = prae_acid_stacks
+		break
+
+	if (PAS == null)
+		new /datum/effects/prae_acid_stacks(H)
+		return
+	else
+		PAS.increment_stack_count()
+		return
+
+/datum/behavior_delegate/praetorian_base/ranged_attack_additional_effects_self(atom/A)
+	if(!ismob(A))
+		return
+	bound_xeno.add_xeno_shield(reward_shield, XENO_SHIELD_SOURCE_BASE_PRAE, add_shield_on = TRUE, max_shield = 45)
+	to_chat(bound_xeno, SPAN_NOTICE("Your exoskeleton shimmers for a fraction of a second as the acid coats your target."))
+	return
+
+/mob/living/carbon/xenomorph/praetorian/Initialize(mapload, mob/living/carbon/xenomorph/oldXeno, h_number, ai_hard_off = FALSE)
+	. = ..()
+	AddComponent(/datum/component/footstep, 2, 50, 15, 1, "alien_footstep_medium")
+
+	playsound(src, 'sound/voice/alien_death_unused.ogg', 100, TRUE, 30, falloff = 5)
+	if(!get_turf(src)) //autowiki compat, spawns in nullspace
+		return
+	for(var/mob/current_mob as anything in get_mobs_in_z_level_range(get_turf(src), 30) - src)
+		var/relative_dir = get_dir(current_mob, src)
+		var/final_dir = dir2text(relative_dir)
+		to_chat(current_mob, SPAN_HIGHDANGER("You hear a terrible roar coming from [final_dir ? "the [final_dir]" : "nearby"] as the ground shakes!"))
+
+/datum/action/xeno_action/activable/prae_acid_ball/ai
+	default_ai_action = TRUE
+	ai_prob_chance = 40
+	activation_delay = 0 SECONDS
+	prime_delay = 0 SECONDS
+	xeno_cooldown = 20 SECONDS
+
+/datum/action/xeno_action/activable/prae_acid_ball/ai/process_ai(mob/living/carbon/xenomorph/parent, delta_time)
+	return DT_PROB(ai_prob_chance, delta_time) && (get_dist(parent, parent.current_target) <= 6) && !check_for_obstacles_projectile(parent, parent.current_target, GLOB.ammo_list[/datum/ammo/xeno/acid/prae_nade]) && use_ability_async(parent.current_target)

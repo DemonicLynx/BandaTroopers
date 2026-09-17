@@ -1,0 +1,157 @@
+/datum/caste_datum/ravager
+	caste_type = XENO_CASTE_RAVAGER
+	tier = 3
+
+	melee_damage_lower = XENO_DAMAGE_TIER_6
+	melee_damage_upper = XENO_DAMAGE_TIER_6
+	melee_vehicle_damage = XENO_DAMAGE_TIER_7 //Queen and Ravs have extra multiplier when dealing damage in multitile_interaction.dm
+	max_health = XENO_HEALTH_KING
+	plasma_gain = XENO_PLASMA_GAIN_TIER_9
+	plasma_max = XENO_PLASMA_TIER_3
+	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_8
+	armor_deflection = XENO_ARMOR_TIER_2
+	evasion = XENO_EVASION_NONE
+	speed = XENO_SPEED_TIER_3
+	heal_standing = 0.66
+
+	tackle_min = 2
+	tackle_max = 5
+	tackle_chance = 35
+	tacklestrength_min = 4
+	tacklestrength_max = 5
+
+	evolution_allowed = FALSE
+	deevolves_to = list(XENO_CASTE_LURKER)
+	caste_desc = "A brutal, devastating front-line attacker."
+	fire_immunity = FIRE_IMMUNITY_NO_DAMAGE|FIRE_IMMUNITY_XENO_FRENZY
+	attack_delay = -1
+
+	available_strains = list(
+		/datum/xeno_strain/berserker,
+		/datum/xeno_strain/hedgehog,
+	)
+	behavior_delegate_type = /datum/behavior_delegate/ravager_base
+
+	minimum_evolve_time = 15 MINUTES
+
+	minimap_icon = "ravager"
+
+/mob/living/carbon/xenomorph/ravager
+	caste_type = XENO_CASTE_RAVAGER
+	name = XENO_CASTE_RAVAGER
+	desc = "A huge, nasty red alien with enormous scythed claws."
+	icon = 'icons/mob/xenos/ravager.dmi'
+	icon_size = 64
+	icon_state = "Ravager Walking"
+	plasma_types = list(PLASMA_CATECHOLAMINE)
+	mob_size = MOB_SIZE_BIG
+	drag_delay = 6 //pulling a big dead xeno is hard
+	tier = 3
+	pixel_x = -16
+	old_x = -16
+	claw_type = CLAW_TYPE_VERY_SHARP
+	organ_value = 3000
+	base_actions = list(
+		/datum/action/xeno_action/onclick/xeno_resting,
+		/datum/action/xeno_action/onclick/regurgitate,
+		/datum/action/xeno_action/watch_xeno,
+		/datum/action/xeno_action/activable/tail_stab/ai,
+		/datum/action/xeno_action/activable/pounce/charge/ai,
+		/datum/action/xeno_action/onclick/empower/ai,
+		/datum/action/xeno_action/activable/scissor_cut,
+		/datum/action/xeno_action/onclick/tacmap,
+	)
+
+	icon_xeno = 'icons/mob/xenos/ravager.dmi'
+	icon_xenonid = 'icons/mob/xenonids/ravager.dmi'
+
+	weed_food_icon = 'icons/mob/xenos/weeds_64x64.dmi'
+	weed_food_states = list("Ravager_1","Ravager_2","Ravager_3")
+	weed_food_states_flipped = list("Ravager_1","Ravager_2","Ravager_3")
+	ai_range = 24
+	forced_retarget_time = (3 SECONDS)
+
+// Mutator delegate for base ravager
+/datum/behavior_delegate/ravager_base
+	var/shield_decay_time = 15 SECONDS // Time in deciseconds before our shield decays
+	var/slash_charge_cdr = 3 SECONDS // Amount to reduce charge cooldown by per slash
+	var/knockdown_amount = 1.3
+	var/fling_distance = 3
+	var/empower_targets = 0
+	var/super_empower_threshold = 3
+	var/dmg_buff_per_target = 2
+
+/datum/behavior_delegate/ravager_base/melee_attack_modify_damage(original_damage, mob/living/carbon/carbon)
+	var/damage_plus
+	if(empower_targets)
+		damage_plus = dmg_buff_per_target * empower_targets
+
+	return original_damage + damage_plus
+
+/datum/behavior_delegate/ravager_base/melee_attack_additional_effects_self()
+	..()
+
+	var/datum/action/xeno_action/activable/pounce/charge/cAction = get_action(bound_xeno, /datum/action/xeno_action/activable/pounce/charge)
+	if (!cAction.action_cooldown_check())
+		cAction.reduce_cooldown(slash_charge_cdr)
+
+/datum/behavior_delegate/ravager_base/append_to_stat()
+	. = list()
+	var/shield_total = 0
+	for (var/datum/xeno_shield/xeno_shield in bound_xeno.xeno_shields)
+		if (xeno_shield.shield_source == XENO_SHIELD_SOURCE_RAVAGER)
+			shield_total += xeno_shield.amount
+
+	. += "Empower Shield: [shield_total]"
+	. += "Bonus Slash Damage: [dmg_buff_per_target * empower_targets]"
+
+/datum/behavior_delegate/ravager_base/on_life()
+	var/datum/xeno_shield/rav_shield
+	for (var/datum/xeno_shield/xeno_shield in bound_xeno.xeno_shields)
+		if (xeno_shield.shield_source == XENO_SHIELD_SOURCE_RAVAGER)
+			rav_shield = xeno_shield
+			break
+
+	if (rav_shield && ((rav_shield.last_damage_taken + shield_decay_time) < world.time))
+		QDEL_NULL(rav_shield)
+		to_chat(bound_xeno, SPAN_XENODANGER("We feel our shield decay!"))
+		bound_xeno.overlay_shields()
+
+/mob/living/carbon/xenomorph/ravager/Initialize(mapload, mob/living/carbon/xenomorph/oldXeno, h_number, ai_hard_off = FALSE)
+	. = ..()
+	AddComponent(/datum/component/footstep, 2, 50, 15, 1, "alien_footstep_medium")
+
+	playsound(src, 'sound/voice/alien_death_unused.ogg', 100, TRUE, 30, falloff = 5)
+	if(!get_turf(src)) //autowiki compat, spawns in nullspace
+		return
+	for(var/mob/current_mob as anything in get_mobs_in_z_level_range(get_turf(src), 30) - src)
+		var/relative_dir = get_dir(current_mob, src)
+		var/final_dir = dir2text(relative_dir)
+		to_chat(current_mob, SPAN_HIGHDANGER("You hear a terrible roar coming from [final_dir ? "the [final_dir]" : "nearby"] as the ground shakes!"))
+
+/datum/action/xeno_action/activable/tail_stab/ai
+	default_ai_action = TRUE
+	ai_prob_chance = 50 //So they are not spamming it quite as often.
+	charge_time = null /// nahh
+	xeno_cooldown = 12 SECONDS
+
+/datum/action/xeno_action/activable/tail_stab/ai/process_ai(mob/living/carbon/xenomorph/parent, delta_time)
+	return DT_PROB(ai_prob_chance, delta_time) && use_ability_async(parent.current_target)
+
+/datum/action/xeno_action/activable/pounce/charge/ai
+	default_ai_action = TRUE
+	ai_prob_chance = 70
+	xeno_cooldown = 16 SECONDS
+
+/datum/action/xeno_action/activable/pounce/charge/ai/process_ai(mob/living/carbon/xenomorph/parent, delta_time)
+	if(DT_PROB(ai_prob_chance, delta_time) && (get_dist(parent, parent.current_target) <= 5))
+		var/turf/T = get_step_to(parent, parent.current_target)
+		return T?.AdjacentQuick(parent.current_target.loc) && use_ability_async(parent.current_target)
+
+/datum/action/xeno_action/onclick/empower/ai
+	default_ai_action = TRUE
+	ai_prob_chance = 60 //So they are not spamming it quite as often.
+	xeno_cooldown = 20 SECONDS
+
+/datum/action/xeno_action/onclick/empower/ai/process_ai(mob/living/carbon/xenomorph/parent, delta_time)
+	return DT_PROB(ai_prob_chance, delta_time) && (get_dist(parent, parent.current_target) <= 3) && use_ability_async(parent.current_target)

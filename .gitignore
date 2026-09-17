@@ -1,0 +1,29 @@
+﻿# Build output
+*.dmb
+*.rsc
+*.int
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs / temporary files
+*.log
+*.tmp
+*.temp
+
+# Bootstrap cache
+tools/bootstrap/.cache/
+
+# TTS temporary files
+tools/ttsServer/tmp*
+
+# Local bundled archive
+BandaTroopers-master.zip
+
+# Node dependencies
+node_modules/
+
+# TGUI archive	gui.zip

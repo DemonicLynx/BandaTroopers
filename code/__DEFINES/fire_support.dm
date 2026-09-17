@@ -1,0 +1,252 @@
+///Can this firesupport type be used
+#define FIRESUPPORT_AVAILABLE (1<<0)
+
+///Assoc list of fire support points
+GLOBAL_LIST_INIT(fire_support_points, list())
+
+//Type of fire support, used for changing callsigns
+#define FIRESUPPORT_CAS "cas"
+#define FIRESUPPORT_ARTY "artillery"
+#define FIRESUPPORT_ORBITAL "orbital"
+#define FIRESUPPORT_CAS_UPP "cas_upp"
+#define FIRESUPPORT_ARTY_UPP "artillery_upp"
+#define FIRESUPPORT_ORBITAL_UPP "orbital_upp"
+// SS220 EDIT - START: HALO fire support firer defines
+#define FIRESUPPORT_CAS_WOMBAT "cas_wombat"
+#define FIRESUPPORT_CAS_C712 "cas_c712"
+#define FIRESUPPORT_CAS_C709 "cas_c709"
+#define FIRESUPPORT_ARTY_UNSC "artillery_unsc"
+#define FIRESUPPORT_ORBITAL_UNSC "orbital_unsc"
+// SS220 EDIT - END
+
+///GAU gun run
+#define FIRESUPPORT_TYPE_GUN "gun"
+///Laser beam run
+#define FIRESUPPORT_TYPE_LASER "laser"
+///Rocket barrage
+#define FIRESUPPORT_TYPE_ROCKETS "rockets"
+///Incendiary rocket barrage
+#define FIRESUPPORT_TYPE_INCEND_ROCKETS "incend_rockets"
+///Missile strike
+#define FIRESUPPORT_TYPE_MISSILE "missile"
+///Smoke missile strike
+#define FIRESUPPORT_TYPE_SMOKE_MISSILE "smoke_missile"
+///Nerve missile strike
+#define FIRESUPPORT_TYPE_NERVE_MISSILE "nerve_missile"
+///Napalm missile strike
+#define FIRESUPPORT_TYPE_NAPALM_MISSILE "napalm_missile"
+///LSD missile strike
+#define FIRESUPPORT_TYPE_LSD_MISSILE "lsd_missile"
+///UPP Gau gun run
+#define FIRESUPPORT_TYPE_GUN_UPP "gun_upp"
+///UPP Laser beam run
+#define FIRESUPPORT_TYPE_LASER_UPP "laser_upp"
+///UPP Rocket barrage
+#define FIRESUPPORT_TYPE_ROCKETS_UPP "rockets_upp"
+///UPP Incendiary rocket barrage
+#define FIRESUPPORT_TYPE_INCEND_ROCKETS_UPP "incend_rockets_upp"
+///UPP Missile strike
+#define FIRESUPPORT_TYPE_MISSILE_UPP "missile_upp"
+///UPP Smoke missile strike
+#define FIRESUPPORT_TYPE_SMOKE_MISSILE_UPP "smoke_missile_upp"
+///UPP Napalm missile strike
+#define FIRESUPPORT_TYPE_NAPALM_MISSILE_UPP "napalm_missile_upp"
+///UPP Nerve missile strike
+#define FIRESUPPORT_TYPE_NERVE_MISSILE_UPP "nerve_missile_upp"
+///UPP LSD missile strike
+#define FIRESUPPORT_TYPE_LSD_MISSILE_UPP "lsd_missile_upp"
+///HE Mortar barrage
+#define FIRESUPPORT_TYPE_HE_MORTAR "he_mortar"
+///Incendiary mortar barrage
+#define FIRESUPPORT_TYPE_INCENDIARY_MORTAR "incendiary_mortar"
+///Flare mortar barrage
+#define FIRESUPPORT_TYPE_FLARE_MORTAR "flare_mortar"
+///Smoke mortar barrage
+#define FIRESUPPORT_TYPE_SMOKE_MORTAR "smoke_mortar"
+///Nerve smoke mortar barrage
+#define FIRESUPPORT_TYPE_NERVE_SMOKE_MORTAR "nerve_smoke_mortar"
+///LSD Smoke mortar barrage
+#define FIRESUPPORT_TYPE_LSD_SMOKE_MORTAR "lsd_smoke_mortar"
+///HE MLRS barrage
+#define FIRESUPPORT_TYPE_HE_MLRS "he_mlrs"
+///Nerve MLRS barrage
+#define FIRESUPPORT_TYPE_NERVE_MLRS "nerve_mlrs"
+///UPP HE Mortar barrage
+#define FIRESUPPORT_TYPE_HE_MORTAR_UPP "he_mortar_upp"
+///UPP Incendiary mortar barrage
+#define FIRESUPPORT_TYPE_INCENDIARY_MORTAR_UPP "incendiary_mortar_upp"
+///UPP Flare mortar barrage
+#define FIRESUPPORT_TYPE_FLARE_MORTAR_UPP "flare_mortar_upp"
+///UPP Smoke mortar barrage
+#define FIRESUPPORT_TYPE_SMOKE_MORTAR_UPP "smoke_mortar_upp"
+///UPP LSD Smoke mortar barrage
+#define FIRESUPPORT_TYPE_LSD_SMOKE_MORTAR_UPP "lsd_smoke_mortar_upp"
+///UPP Nerve smoke mortar barrage
+#define FIRESUPPORT_TYPE_NERVE_SMOKE_MORTAR_UPP "nerve_smoke_mortar_upp"
+///UPP HE MLRS barrage
+#define FIRESUPPORT_TYPE_HE_MLRS_UPP "he_mlrs_upp"
+///UPP Nerve MLRS barrage
+#define FIRESUPPORT_TYPE_NERVE_MLRS_UPP "nerve_mlrs_upp"
+///Orbital bombardment
+#define FIRESUPPORT_TYPE_OB "ob"
+///UPP Orbital bombardment
+#define FIRESUPPORT_TYPE_OB_UPP "ob_upp"
+///Supply drop
+#define FIRESUPPORT_TYPE_SUPPLY_DROP "supply_drop"
+///Sentry drop pod
+#define FIRESUPPORT_TYPE_SENTRY_POD "sentry_pod"
+///UPP Sentry drop pod
+#define FIRESUPPORT_TYPE_SENTRY_POD_UPP "sentry_pod_upp"
+///UPP Supply drop
+#define FIRESUPPORT_TYPE_SUPPLY_DROP_UPP "supply_drop_upp"
+
+//seperate fire support types
+#define FIRESUPPORT_TYPE_WRAITH_PLASMA "wraith_plasma"
+#define FIRESUPPORT_TYPE_BANSHEE_FUEL_ROD "banshee_fuel_rod"
+#define FIRESUPPORT_TYPE_BANSHEE_STRAFE "banshee_strafe"
+// SS220 EDIT - START: HALO banshee/seraph flyby type defines
+#define FIRESUPPORT_TYPE_BANSHEE_FLYBY "banshee_flyby"
+#define FIRESUPPORT_TYPE_SERAPH_FUEL_ROD "seraph_fuel_rod"
+#define FIRESUPPORT_TYPE_SERAPH_STRAFE "seraph_strafe"
+#define FIRESUPPORT_TYPE_SERAPH_FLYBY "seraph_flyby"
+// SS220 EDIT - END
+#define FIRESUPPORT_TYPE_GLASSING_BEAM "glassing_beam"
+#define FIRESUPPORT_TYPE_GLASSING_BEAM_FAST "glassing_beam_fast"
+#define FIRESUPPORT_TYPE_GLASSING_BEAM_WEAK "glassing_beam_weak"
+#define FIRESUPPORT_TYPE_GLASSING_BEAM_WEAK_INSTANT "glassing_beam_weak_instant"
+
+#define FIRESUPPORT_TYPE_WOMBAT_GAU "wombat_gau"
+#define FIRESUPPORT_TYPE_WOMBAT_MISSILE "wombat_missile"
+#define FIRESUPPORT_TYPE_WOMBAT_INCENDIARY "wombat_incendiary"
+// SS220 EDIT - START: HALO fire support call-in and supply drop type defines
+#define FIRESUPPORT_TYPE_WOMBAT_GAU_CALL_IN "wombat_gau_call_in"
+#define FIRESUPPORT_TYPE_WOMBAT_MISSILE_CALL_IN "wombat_missile_call_in"
+#define FIRESUPPORT_TYPE_WOMBAT_INCENDIARY_CALL_IN "wombat_incendiary_call_in"
+#define FIRESUPPORT_TYPE_WOMBAT_SUPPLY_DROP "wombat_supply_drop"
+#define FIRESUPPORT_TYPE_WOMBAT_SUPPLY_DROP_SPEC "wombat_supply_drop_spec"
+#define FIRESUPPORT_TYPE_WOMBAT_SUPPLY_DROP_ODST "wombat_supply_drop_odst"
+#define FIRESUPPORT_TYPE_WOMBAT_SUPPLY_DROP_GRENADES "wombat_supply_drop_grenades"
+#define FIRESUPPORT_TYPE_WOMBAT_SUPPLY_DROP_MEDICAL "wombat_supply_drop_medical"
+// SS220 EDIT - END
+#define FIRESUPPORT_TYPE_WOMBAT_FLYBY "wombat_flyby"
+
+#define FIRESUPPORT_TYPE_C712_COILGUN "c712_coilgun"
+#define FIRESUPPORT_TYPE_C712_CLUSTER "c712_cluster"
+#define FIRESUPPORT_TYPE_C712_MISSILE "c712_missile"
+// SS220 EDIT - START: HALO C712 call-in type defines
+#define FIRESUPPORT_TYPE_C712_COILGUN_CALL_IN "c712_coilgun_call_in"
+#define FIRESUPPORT_TYPE_C712_CLUSTER_CALL_IN "c712_cluster_call_in"
+#define FIRESUPPORT_TYPE_C712_MISSILE_CALL_IN "c712_missile_call_in"
+// SS220 EDIT - END
+#define FIRESUPPORT_TYPE_C712_FLYBY "c712_flyby"
+
+#define FIRESUPPORT_TYPE_C709_CLUSTER "c709_cluster_bomb"
+#define FIRESUPPORT_TYPE_C709_MISSILE "c709_missile"
+#define FIRESUPPORT_TYPE_C709_INCENDIARY "c709_incendiary_bomb"
+#define FIRESUPPORT_TYPE_C709_FLYBY "c709_flyby"
+
+// SS220 EDIT - START: HALO dropship hover type defines
+#define FIRESUPPORT_TYPE_PELICAN_HOVER "pelican_hover"
+#define FIRESUPPORT_TYPE_PELICAN_HOVER_ARMED "pelican_hover_armed"
+#define FIRESUPPORT_TYPE_PELICAN_HOVER_LIGHT "pelican_hover_light"
+#define FIRESUPPORT_TYPE_PHANTOM_HOVER "phantom_hover"
+#define FIRESUPPORT_TYPE_PHANTOM_HOVER_ARMED "phantom_hover_armed"
+#define FIRESUPPORT_TYPE_SPIRIT_HOVER "spirit_hover"
+#define FIRESUPPORT_TYPE_SPIRIT_HOVER_ARMED "spirit_hover_armed"
+// SS220 EDIT - END
+
+#define FIRESUPPORT_TYPE_MAC "mac"
+#define FIRESUPPORT_TYPE_MAC_ATMOS "mac_atmospheric"
+// SS220 EDIT - START: HALO MAC call-in type define
+#define FIRESUPPORT_TYPE_MAC_ATMOS_CALL_IN "mac_atmospheric_call_in"
+// SS220 EDIT - END
+#define FIRESUPPORT_TYPE_COILGUNS "coilguns"
+
+///Assoc list of firesupport types
+GLOBAL_LIST_INIT(fire_support_types, list(
+	FIRESUPPORT_TYPE_SUPPLY_DROP = new /datum/fire_support/supply_drop,
+	FIRESUPPORT_TYPE_SENTRY_POD = new /datum/fire_support/sentry_drop,
+	FIRESUPPORT_TYPE_SUPPLY_DROP_UPP = new /datum/fire_support/supply_drop/upp,
+	FIRESUPPORT_TYPE_SENTRY_POD_UPP = new /datum/fire_support/sentry_drop/upp,
+	FIRESUPPORT_TYPE_GUN = new /datum/fire_support/gau,
+	FIRESUPPORT_TYPE_LASER = new /datum/fire_support/laser,
+	FIRESUPPORT_TYPE_ROCKETS = new /datum/fire_support/rockets,
+	FIRESUPPORT_TYPE_INCEND_ROCKETS = new /datum/fire_support/incendiary_rockets,
+	FIRESUPPORT_TYPE_MISSILE = new /datum/fire_support/missile,
+	FIRESUPPORT_TYPE_NAPALM_MISSILE = new /datum/fire_support/missile/napalm,
+	FIRESUPPORT_TYPE_SMOKE_MISSILE = new /datum/fire_support/missile/smoke,
+	FIRESUPPORT_TYPE_NERVE_MISSILE = new /datum/fire_support/missile/smoke/nerve,
+	FIRESUPPORT_TYPE_LSD_MISSILE = new /datum/fire_support/missile/smoke/lsd,
+	FIRESUPPORT_TYPE_GUN_UPP = new /datum/fire_support/gau/upp,
+	FIRESUPPORT_TYPE_LASER_UPP = new /datum/fire_support/laser/upp,
+	FIRESUPPORT_TYPE_ROCKETS_UPP = new /datum/fire_support/rockets/upp,
+	FIRESUPPORT_TYPE_INCEND_ROCKETS_UPP = new /datum/fire_support/incendiary_rockets/upp,
+	FIRESUPPORT_TYPE_MISSILE_UPP = new /datum/fire_support/missile/upp,
+	FIRESUPPORT_TYPE_NAPALM_MISSILE_UPP = new /datum/fire_support/missile/napalm/upp,
+	FIRESUPPORT_TYPE_SMOKE_MISSILE_UPP = new /datum/fire_support/missile/smoke/upp,
+	FIRESUPPORT_TYPE_NERVE_MISSILE_UPP = new /datum/fire_support/missile/smoke/nerve/upp,
+	FIRESUPPORT_TYPE_LSD_MISSILE_UPP = new /datum/fire_support/missile/smoke/lsd/upp,
+	FIRESUPPORT_TYPE_HE_MORTAR = new /datum/fire_support/mortar,
+	FIRESUPPORT_TYPE_INCENDIARY_MORTAR = new /datum/fire_support/mortar/incendiary,
+	FIRESUPPORT_TYPE_FLARE_MORTAR = new /datum/fire_support/mortar/flare,
+	FIRESUPPORT_TYPE_SMOKE_MORTAR = new /datum/fire_support/mortar/smoke,
+	FIRESUPPORT_TYPE_NERVE_SMOKE_MORTAR = new /datum/fire_support/mortar/smoke/cn,
+	FIRESUPPORT_TYPE_LSD_SMOKE_MORTAR = new /datum/fire_support/mortar/smoke/lsd,
+	FIRESUPPORT_TYPE_HE_MLRS = new /datum/fire_support/mortar/mlrs,
+	FIRESUPPORT_TYPE_NERVE_MLRS = new /datum/fire_support/mortar/smoke/mlrs_cn,
+	FIRESUPPORT_TYPE_HE_MORTAR_UPP = new /datum/fire_support/mortar/upp,
+	FIRESUPPORT_TYPE_INCENDIARY_MORTAR_UPP = new /datum/fire_support/mortar/incendiary/upp,
+	FIRESUPPORT_TYPE_FLARE_MORTAR_UPP = new /datum/fire_support/mortar/flare/upp,
+	FIRESUPPORT_TYPE_SMOKE_MORTAR_UPP = new /datum/fire_support/mortar/smoke/upp,
+	FIRESUPPORT_TYPE_LSD_SMOKE_MORTAR_UPP = new /datum/fire_support/mortar/smoke/lsd/upp,
+	FIRESUPPORT_TYPE_NERVE_SMOKE_MORTAR_UPP = new /datum/fire_support/mortar/smoke/cn/upp,
+	FIRESUPPORT_TYPE_HE_MLRS_UPP = new /datum/fire_support/mortar/mlrs/upp,
+	FIRESUPPORT_TYPE_NERVE_MLRS_UPP = new /datum/fire_support/mortar/smoke/mlrs_cn/upp,
+	FIRESUPPORT_TYPE_OB = new /datum/fire_support/ob,
+	FIRESUPPORT_TYPE_OB_UPP = new /datum/fire_support/ob/upp,
+	FIRESUPPORT_TYPE_WRAITH_PLASMA = new /datum/fire_support/custom/wraith_plasma,
+	FIRESUPPORT_TYPE_BANSHEE_FUEL_ROD = new /datum/fire_support/custom/banshee_fuel_rod,
+	FIRESUPPORT_TYPE_BANSHEE_STRAFE = new /datum/fire_support/custom/banshee_strafe,
+	FIRESUPPORT_TYPE_BANSHEE_FLYBY = new /datum/fire_support/custom/banshee_flyby,
+	FIRESUPPORT_TYPE_SERAPH_FUEL_ROD = new /datum/fire_support/custom/banshee_fuel_rod/seraph,
+	FIRESUPPORT_TYPE_SERAPH_STRAFE = new /datum/fire_support/custom/banshee_strafe/seraph,
+	FIRESUPPORT_TYPE_SERAPH_FLYBY = new /datum/fire_support/custom/seraph_flyby,
+	FIRESUPPORT_TYPE_GLASSING_BEAM = new /datum/fire_support/custom/glassing_beam,
+	FIRESUPPORT_TYPE_GLASSING_BEAM_FAST = new /datum/fire_support/custom/glassing_beam/fast,
+	FIRESUPPORT_TYPE_GLASSING_BEAM_WEAK = new /datum/fire_support/custom/glassing_beam/weak,
+	FIRESUPPORT_TYPE_GLASSING_BEAM_WEAK_INSTANT = new /datum/fire_support/custom/glassing_beam/weak/instant,
+	FIRESUPPORT_TYPE_WOMBAT_GAU = new /datum/fire_support/custom/wombat/gau,
+	FIRESUPPORT_TYPE_WOMBAT_MISSILE = new /datum/fire_support/custom/wombat/missile,
+	FIRESUPPORT_TYPE_WOMBAT_INCENDIARY = new /datum/fire_support/custom/wombat/incendiary_missile,
+	FIRESUPPORT_TYPE_WOMBAT_GAU_CALL_IN = new /datum/fire_support/custom/wombat/gau/call_in,
+	FIRESUPPORT_TYPE_WOMBAT_MISSILE_CALL_IN = new /datum/fire_support/custom/wombat/missile/call_in,
+	FIRESUPPORT_TYPE_WOMBAT_INCENDIARY_CALL_IN = new /datum/fire_support/custom/wombat/incendiary_missile/call_in,
+	FIRESUPPORT_TYPE_WOMBAT_SUPPLY_DROP = new /datum/fire_support/custom/wombat/supply_drop,
+	FIRESUPPORT_TYPE_WOMBAT_SUPPLY_DROP_SPEC = new /datum/fire_support/custom/wombat/supply_drop/spec,
+	FIRESUPPORT_TYPE_WOMBAT_SUPPLY_DROP_ODST = new /datum/fire_support/custom/wombat/supply_drop/odst,
+	FIRESUPPORT_TYPE_WOMBAT_SUPPLY_DROP_GRENADES = new /datum/fire_support/custom/wombat/supply_drop/grenades,
+	FIRESUPPORT_TYPE_WOMBAT_SUPPLY_DROP_MEDICAL = new /datum/fire_support/custom/wombat/supply_drop/medical_resupply,
+	FIRESUPPORT_TYPE_WOMBAT_FLYBY = new /datum/fire_support/custom/wombat/flyby,
+	FIRESUPPORT_TYPE_C712_COILGUN = new /datum/fire_support/custom/c712/coilgun,
+	FIRESUPPORT_TYPE_C712_CLUSTER = new /datum/fire_support/custom/c712/cluster,
+	FIRESUPPORT_TYPE_C712_MISSILE = new /datum/fire_support/custom/c712/missile,
+	FIRESUPPORT_TYPE_C712_COILGUN_CALL_IN = new /datum/fire_support/custom/c712/coilgun/call_in,
+	FIRESUPPORT_TYPE_C712_CLUSTER_CALL_IN = new /datum/fire_support/custom/c712/cluster/call_in,
+	FIRESUPPORT_TYPE_C712_MISSILE_CALL_IN = new /datum/fire_support/custom/c712/missile/call_in,
+	FIRESUPPORT_TYPE_C712_FLYBY = new /datum/fire_support/custom/c712/flyby,
+	FIRESUPPORT_TYPE_C709_CLUSTER = new /datum/fire_support/custom/c709/cluster,
+	FIRESUPPORT_TYPE_C709_MISSILE = new /datum/fire_support/custom/c709/missile,
+	FIRESUPPORT_TYPE_C709_INCENDIARY = new /datum/fire_support/custom/c709/incendiary,
+	FIRESUPPORT_TYPE_C709_FLYBY = new /datum/fire_support/custom/c709/flyby,
+	FIRESUPPORT_TYPE_MAC = new /datum/fire_support/custom/ob/mac_gun,
+	FIRESUPPORT_TYPE_MAC_ATMOS = new /datum/fire_support/custom/ob/mac_gun/in_atmosphere,
+	FIRESUPPORT_TYPE_MAC_ATMOS_CALL_IN = new /datum/fire_support/custom/ob/mac_gun/in_atmosphere/call_in,
+	FIRESUPPORT_TYPE_COILGUNS = new /datum/fire_support/custom/ob/coilgun_fire,
+	FIRESUPPORT_TYPE_PELICAN_HOVER = new /datum/fire_support/custom/pelican_hover,
+	FIRESUPPORT_TYPE_PELICAN_HOVER_ARMED = new /datum/fire_support/custom/pelican_hover/armed,
+	FIRESUPPORT_TYPE_PELICAN_HOVER_LIGHT = new /datum/fire_support/custom/pelican_hover/light,
+	FIRESUPPORT_TYPE_PHANTOM_HOVER = new /datum/fire_support/custom/phantom_hover,
+	FIRESUPPORT_TYPE_PHANTOM_HOVER_ARMED = new /datum/fire_support/custom/phantom_hover/armed,
+	FIRESUPPORT_TYPE_SPIRIT_HOVER = new /datum/fire_support/custom/spirit_hover,
+	FIRESUPPORT_TYPE_SPIRIT_HOVER_ARMED = new /datum/fire_support/custom/spirit_hover/armed,
+	))
